@@ -1,0 +1,584 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <title>ER Prep Snapshot – Your Personal ER Summary</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <style>
+    body {
+      font-family: system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+      max-width: 800px;
+      margin: 0 auto;
+      padding: 16px;
+      line-height: 1.4;
+      background: #f5f5f5;
+      color: #222;
+    }
+    .page {
+      background: #fff;
+      padding: 16px;
+      border-radius: 4px;
+      box-shadow: 0 0 8px rgba(0,0,0,0.05);
+      box-sizing: border-box;
+      margin-bottom: 24px;
+    }
+    h1 {
+      font-size: 1.5rem;
+      margin-bottom: 0.25rem;
+    }
+    h2 {
+      font-size: 1.2rem;
+      margin-top: 1.25rem;
+      margin-bottom: 0.25rem;
+    }
+    p.small {
+      font-size: 0.85rem;
+      color: #555;
+      margin-top: 0.25rem;
+      margin-bottom: 0.75rem;
+    }
+    label {
+      display: block;
+      margin-top: 8px;
+      font-weight: 600;
+      font-size: 0.9rem;
+    }
+    input, textarea, select {
+      width: 100%;
+      padding: 6px;
+      margin-top: 4px;
+      box-sizing: border-box;
+      font-family: inherit;
+      font-size: 0.9rem;
+    }
+    textarea {
+      min-height: 60px;
+      resize: vertical;
+    }
+    .row {
+      display: flex;
+      gap: 8px;
+    }
+    .row > div {
+      flex: 1;
+    }
+    button {
+      margin-top: 12px;
+      margin-right: 8px;
+      padding: 8px 12px;
+      font-size: 0.9rem;
+      cursor: pointer;
+    }
+    #summaryBox, #callScriptBox {
+      margin-top: 16px;
+      white-space: pre-wrap;
+      border: 1px solid #ccc;
+      padding: 10px;
+      font-family: "SF Mono", Menlo, Consolas, monospace;
+      font-size: 0.85rem;
+      background: #fafafa;
+    }
+    .section-card {
+      border: 1px solid #ddd;
+      padding: 10px;
+      margin-top: 8px;
+      border-radius: 4px;
+      background: #fdfdfd;
+    }
+    .no-print {
+      display: block;
+    }
+    .actions-row {
+      margin-top: 8px;
+    }
+    @media print {
+      body {
+        max-width: none;
+        margin: 0;
+        padding: 8px;
+        background: #fff;
+      }
+      .page {
+        box-shadow: none;
+        border-radius: 0;
+      }
+      .no-print {
+        display: none !important;
+      }
+      #summaryBox, #callScriptBox {
+        border: none;
+        background: white;
+        font-size: 0.9rem;
+      }
+    }
+  </style>
+</head>
+<body>
+  <div class="page">
+    <h1>ER Prep Snapshot</h1>
+    <p class="small">
+      This tool helps you prepare a one-page summary for an Emergency Room visit: your history, medications, allergies, and what is happening today.
+      It runs entirely in your browser. We do <strong>not</strong> store or receive your information on our servers.
+    </p>
+    <p class="small">
+      You can save your baseline information on <strong>this device only</strong>. You decide if you want to show the summary to ER staff, print it, or read it over the phone.
+    </p>
+    <p class="small" style="border-left:3px solid #c92a2a;padding-left:8px;background:#fff5f5;">
+      <strong>Important:</strong> This does <strong>not</strong> replace 911.  
+      If your symptoms are severe, sudden, or getting worse (for example chest pain, trouble breathing, stroke-like symptoms, severe bleeding, major trauma), call 911 immediately.  
+      Do not delay going to the ER to fill out this form.
+    </p>
+
+    <!-- BASELINE SECTION -->
+    <h2>1. Your baseline information</h2>
+    <p class="small">
+      Fill this out once when you are well. You can update and save it on <em>this device only</em>.
+    </p>
+
+    <div class="section-card">
+      <label>
+        Full name
+        <input type="text" id="base_name" />
+      </label>
+
+      <div class="row">
+        <div>
+          <label>
+            Date of birth
+            <input type="text" id="base_dob" placeholder="YYYY-MM-DD or MM/DD/YYYY" />
+          </label>
+        </div>
+        <div>
+          <label>
+            Sex
+            <select id="base_sex">
+              <option value="">Select…</option>
+              <option>Male</option>
+              <option>Female</option>
+              <option>Other</option>
+              <option>Prefer not to say</option>
+            </select>
+          </label>
+        </div>
+      </div>
+
+      <div class="row">
+        <div>
+          <label>
+            Height
+            <input type="text" id="base_height" placeholder="e.g. 5'9&quot; or 175 cm" />
+          </label>
+        </div>
+        <div>
+          <label>
+            Weight
+            <input type="text" id="base_weight" placeholder="e.g. 180 lb or 82 kg" />
+          </label>
+        </div>
+      </div>
+
+      <label>
+        Chronic conditions (heart disease, diabetes, kidney problems, etc.)
+        <textarea id="base_conditions" placeholder="Example: Coronary artery disease with stent 2018; hypertension; type 2 diabetes; CKD stage 3."></textarea>
+      </label>
+
+      <label>
+        Regular medications
+        <textarea id="base_meds" placeholder="Example: Aspirin 81 mg; Atorvastatin 40 mg; Metoprolol 50 mg BID; Lisinopril 10 mg; Metformin 1000 mg BID."></textarea>
+      </label>
+
+      <label>
+        Medication / food / contrast allergies
+        <textarea id="base_allergies" placeholder="Example: Penicillin (anaphylaxis); IV contrast (hives); NKDA if none."></textarea>
+      </label>
+
+      <label>
+        Primary doctor and important specialists
+        <textarea id="base_doctors" placeholder="Example: Dr. Smith (PCP); Dr. Lee (cardiologist)."></textarea>
+      </label>
+
+      <label>
+        Emergency contact (name and phone)
+        <textarea id="base_contact" placeholder="Example: Jane Doe (spouse), 555-123-4567."></textarea>
+      </label>
+
+      <button class="no-print" type="button" onclick="saveBaseline()">Save baseline on this device</button>
+      <button class="no-print" type="button" onclick="loadBaseline()">Load saved baseline</button>
+      <p class="small">
+        Baseline is stored only in this browser on this device (local storage). Clearing browser data will erase it.
+      </p>
+    </div>
+
+    <!-- CURRENT VISIT SECTION -->
+    <h2>2. Today’s visit</h2>
+    <p class="small">
+      Use this when you are going to the ER by car (and it is safe to use your phone). Keep it brief and honest.
+    </p>
+
+    <div class="section-card">
+      <label>
+        Which ER are you going to? (name and city)
+        <input type="text" id="visit_er" placeholder="Example: Metro General ER, Springfield" />
+      </label>
+
+      <label>
+        What is happening right now? (main problem)
+        <textarea id="visit_chief" placeholder="Example: Chest pain for 40 minutes, pressure in the center of the chest."></textarea>
+      </label>
+
+      <label>
+        When did this start and how?
+        <textarea id="visit_onset" placeholder="Example: Started about 40 minutes ago while walking up stairs; not relieved by rest."></textarea>
+      </label>
+
+      <label>
+        Other symptoms (shortness of breath, sweating, nausea, weakness, fever, etc.)
+        <textarea id="visit_symptoms" placeholder="Example: Shortness of breath and sweating; no vomiting; no fainting."></textarea>
+      </label>
+
+      <label>
+        What have you taken or done so far?
+        <textarea id="visit_taken" placeholder="Example: Took 2 baby aspirins (162 mg) at home; sat and rested; no nitro available."></textarea>
+      </label>
+
+      <label>
+        What worries you the most right now?
+        <textarea id="visit_worries" placeholder="Example: Feels like the chest pain I had with my heart attack in 2018."></textarea>
+      </label>
+
+      <label>
+        About how long until you arrive? (minutes, optional)
+        <input type="number" id="visit_eta" min="0" max="240" placeholder="Example: 20" />
+      </label>
+
+      <button class="no-print" type="button" onclick="generateSummary()">Generate written summary</button>
+      <button class="no-print" type="button" onclick="generateCallScript()">Generate call script</button>
+      <button class="no-print" type="button" onclick="window.print()">Print</button>
+    </div>
+
+    <!-- SUMMARY OUTPUT -->
+    <h2>3. Written summary</h2>
+    <p class="small no-print">
+      Show this on your phone, print it, or copy and paste it into a message/portal if you wish.
+    </p>
+    <div id="summaryBox">
+      (Your summary will appear here after you click "Generate written summary".)
+    </div>
+    <div class="actions-row no-print">
+      <button type="button" onclick="copySummary()">Copy summary text</button>
+      <button type="button" onclick="openEmailDraft()">Open email draft with summary</button>
+      <button type="button" onclick="downloadSummaryTxt()">Download summary as .txt</button>
+    </div>
+
+    <!-- CALL SCRIPT OUTPUT -->
+    <h2>4. Call script (optional)</h2>
+    <p class="small no-print">
+      If you call the ER ahead of time, you can read this script out loud. You still speak to a real person; this just helps you say the important things clearly.
+    </p>
+    <div id="callScriptBox">
+      (Your call script will appear here after you click "Generate call script".)
+    </div>
+    <div class="actions-row no-print">
+      <button type="button" onclick="copyCallScript()">Copy call script</button>
+    </div>
+  </div>
+
+  <script>
+    const BASELINE_KEY = "er_prep_baseline_v1";
+    let lastSummaryText = "";
+    let lastCallScriptText = "";
+
+    function saveBaseline() {
+      const baseline = {
+        name: document.getElementById("base_name").value.trim(),
+        dob: document.getElementById("base_dob").value.trim(),
+        sex: document.getElementById("base_sex").value,
+        height: document.getElementById("base_height").value.trim(),
+        weight: document.getElementById("base_weight").value.trim(),
+        conditions: document.getElementById("base_conditions").value.trim(),
+        meds: document.getElementById("base_meds").value.trim(),
+        allergies: document.getElementById("base_allergies").value.trim(),
+        doctors: document.getElementById("base_doctors").value.trim(),
+        contact: document.getElementById("base_contact").value.trim()
+      };
+      try {
+        localStorage.setItem(BASELINE_KEY, JSON.stringify(baseline));
+        alert("Baseline saved on this device.");
+      } catch (e) {
+        alert("Could not save baseline (local storage error).");
+      }
+    }
+
+    function loadBaseline() {
+      try {
+        const raw = localStorage.getItem(BASELINE_KEY);
+        if (!raw) {
+          alert("No baseline saved on this device.");
+          return;
+        }
+        const b = JSON.parse(raw);
+        document.getElementById("base_name").value = b.name || "";
+        document.getElementById("base_dob").value = b.dob || "";
+        document.getElementById("base_sex").value = b.sex || "";
+        document.getElementById("base_height").value = b.height || "";
+        document.getElementById("base_weight").value = b.weight || "";
+        document.getElementById("base_conditions").value = b.conditions || "";
+        document.getElementById("base_meds").value = b.meds || "";
+        document.getElementById("base_allergies").value = b.allergies || "";
+        document.getElementById("base_doctors").value = b.doctors || "";
+        document.getElementById("base_contact").value = b.contact || "";
+        alert("Baseline loaded from this device.");
+      } catch (e) {
+        alert("Could not load baseline (local storage error).");
+      }
+    }
+
+    function generateSummary() {
+      const base_name = document.getElementById("base_name").value.trim();
+      const base_dob = document.getElementById("base_dob").value.trim();
+      const base_sex = document.getElementById("base_sex").value;
+      const base_height = document.getElementById("base_height").value.trim();
+      const base_weight = document.getElementById("base_weight").value.trim();
+      const base_conditions = document.getElementById("base_conditions").value.trim();
+      const base_meds = document.getElementById("base_meds").value.trim();
+      const base_allergies = document.getElementById("base_allergies").value.trim();
+      const base_doctors = document.getElementById("base_doctors").value.trim();
+      const base_contact = document.getElementById("base_contact").value.trim();
+
+      const visit_er = document.getElementById("visit_er").value.trim();
+      const visit_chief = document.getElementById("visit_chief").value.trim();
+      const visit_onset = document.getElementById("visit_onset").value.trim();
+      const visit_symptoms = document.getElementById("visit_symptoms").value.trim();
+      const visit_taken = document.getElementById("visit_taken").value.trim();
+      const visit_worries = document.getElementById("visit_worries").value.trim();
+      const visit_eta = document.getElementById("visit_eta").value.trim();
+
+      const lines = [];
+
+      // HEADER
+      lines.push("ER SNAPSHOT – PATIENT SUMMARY");
+      lines.push("================================");
+      if (base_name) lines.push(`Name: ${base_name}`);
+      if (base_dob) lines.push(`Date of birth: ${base_dob}`);
+      if (base_sex) lines.push(`Sex: ${base_sex}`);
+      if (base_height || base_weight) {
+        lines.push(
+          "Height / Weight: " +
+          [base_height || null, base_weight || null].filter(Boolean).join(" | ")
+        );
+      }
+      if (visit_er) lines.push(`Planned ER: ${visit_er}`);
+      if (visit_eta) lines.push(`Approximate ETA: about ${visit_eta} minute(s) from now.`);
+      lines.push("");
+
+      // CURRENT EPISODE
+      lines.push("CURRENT PROBLEM");
+      lines.push("---------------");
+      lines.push(visit_chief || "(not specified)");
+      lines.push("");
+      lines.push("Onset (when and how it started):");
+      lines.push(visit_onset || "(not specified)");
+      lines.push("");
+      lines.push("Other symptoms:");
+      lines.push(visit_symptoms || "(not specified)");
+      lines.push("");
+      lines.push("What I have taken or done so far:");
+      lines.push(visit_taken || "(not specified)");
+      lines.push("");
+      lines.push("What worries me the most:");
+      lines.push(visit_worries || "(not specified)");
+      lines.push("");
+
+      // BASELINE
+      lines.push("CHRONIC CONDITIONS");
+      lines.push("------------------");
+      lines.push(base_conditions || "(not specified)");
+      lines.push("");
+      lines.push("REGULAR MEDICATIONS");
+      lines.push("-------------------");
+      lines.push(base_meds || "(not specified)");
+      lines.push("");
+      lines.push("ALLERGIES");
+      lines.push("---------");
+      lines.push(base_allergies || "(not specified)");
+      lines.push("");
+      lines.push("DOCTORS");
+      lines.push("-------");
+      lines.push(base_doctors || "(not specified)");
+      lines.push("");
+      lines.push("EMERGENCY CONTACT");
+      lines.push("-----------------");
+      lines.push(base_contact || "(not specified)");
+      lines.push("");
+      lines.push("Note: This summary was prepared by the patient or family to help explain the situation quickly.");
+      lines.push("It does not replace standard triage or medical evaluation.");
+
+      lastSummaryText = lines.join("\n");
+      document.getElementById("summaryBox").textContent = lastSummaryText;
+    }
+
+    function generateCallScript() {
+      const base_name = document.getElementById("base_name").value.trim();
+      const base_dob = document.getElementById("base_dob").value.trim();
+      const base_sex = document.getElementById("base_sex").value;
+      const base_conditions = document.getElementById("base_conditions").value.trim();
+      const base_meds = document.getElementById("base_meds").value.trim();
+      const base_allergies = document.getElementById("base_allergies").value.trim();
+
+      const visit_er = document.getElementById("visit_er").value.trim();
+      const visit_chief = document.getElementById("visit_chief").value.trim();
+      const visit_onset = document.getElementById("visit_onset").value.trim();
+      const visit_symptoms = document.getElementById("visit_symptoms").value.trim();
+      const visit_taken = document.getElementById("visit_taken").value.trim();
+      const visit_worries = document.getElementById("visit_worries").value.trim();
+      const visit_eta = document.getElementById("visit_eta").value.trim();
+
+      const parts = [];
+
+      // Opening
+      parts.push("Hi, my name is " + (base_name || "[your name]") + ".");
+      if (base_dob) {
+        parts.push("My date of birth is " + base_dob + ".");
+      }
+      if (base_sex) {
+        parts.push("I am " + base_sex.toLowerCase() + ".");
+      }
+      if (visit_er) {
+        parts.push("I am on my way to your emergency department at " + visit_er + ".");
+      } else {
+        parts.push("I am on my way to the emergency department.");
+      }
+
+      // Current problem
+      parts.push("I am calling because " + (visit_chief || "I am having a medical problem") + ".");
+      if (visit_onset) {
+        parts.push("It started " + visit_onset + ".");
+      }
+      if (visit_symptoms) {
+        parts.push("Other symptoms: " + visit_symptoms + ".");
+      }
+
+      // What they've done
+      if (visit_taken) {
+        parts.push("So far I have taken or done: " + visit_taken + ".");
+      }
+
+      // History / meds / allergies
+      if (base_conditions) {
+        parts.push("My main medical problems are: " + base_conditions + ".");
+      }
+      if (base_meds) {
+        parts.push("My regular medications include: " + base_meds + ".");
+      }
+      if (base_allergies) {
+        parts.push("My allergies are: " + base_allergies + ".");
+      }
+
+      // Worries and ETA
+      if (visit_worries) {
+        parts.push("What worries me the most is: " + visit_worries + ".");
+      }
+      if (visit_eta) {
+        parts.push("We expect to arrive in about " + visit_eta + " minute(s).");
+      }
+
+      parts.push("Thank you.");
+
+      lastCallScriptText = parts.join(" ");
+      document.getElementById("callScriptBox").textContent = lastCallScriptText;
+    }
+
+    function copyToClipboard(text, label) {
+      if (!text) {
+        alert("Nothing to copy yet. Please generate the " + label + " first.");
+        return;
+      }
+      if (navigator.clipboard && navigator.clipboard.writeText) {
+        navigator.clipboard.writeText(text)
+          .then(() => alert(label + " copied to clipboard."))
+          .catch(() => fallbackCopy(text, label));
+      } else {
+        fallbackCopy(text, label);
+      }
+    }
+
+    function fallbackCopy(text, label) {
+      const ta = document.createElement("textarea");
+      ta.value = text;
+      ta.style.position = "fixed";
+      ta.style.top = "-1000px";
+      document.body.appendChild(ta);
+      ta.focus();
+      ta.select();
+      try {
+        document.execCommand("copy");
+        alert(label + " copied to clipboard.");
+      } catch (e) {
+        alert("Could not copy " + label + " on this device.");
+      }
+      document.body.removeChild(ta);
+    }
+
+    function copySummary() {
+      if (!lastSummaryText) generateSummary();
+      copyToClipboard(lastSummaryText, "Summary");
+    }
+
+    function copyCallScript() {
+      if (!lastCallScriptText) generateCallScript();
+      copyToClipboard(lastCallScriptText, "Call script");
+    }
+
+    function openEmailDraft() {
+      if (!lastSummaryText) generateSummary();
+      if (!lastSummaryText) {
+        alert("No summary available to email.");
+        return;
+      }
+      const base_name = document.getElementById("base_name").value.trim();
+      const subject = encodeURIComponent("ER Snapshot for " + (base_name || "patient"));
+      const body = encodeURIComponent(lastSummaryText + "\n\n(Generated with ER Prep Snapshot)");
+      // No "to" address – patient fills in the ER email or their doctor's email
+      window.location.href = "mailto:?subject=" + subject + "&body=" + body;
+    }
+
+    function downloadSummaryTxt() {
+      if (!lastSummaryText) generateSummary();
+      if (!lastSummaryText) {
+        alert("No summary available to download.");
+        return;
+      }
+      const blob = new Blob([lastSummaryText], { type: "text/plain" });
+      const url = URL.createObjectURL(blob);
+      const a = document.createElement("a");
+      a.href = url;
+      a.download = "er_snapshot.txt";
+      document.body.appendChild(a);
+      a.click();
+      document.body.removeChild(a);
+      URL.revokeObjectURL(url);
+    }
+
+    // Auto-load baseline once when page opens
+    (function autoLoadBaselineOnce() {
+      try {
+        const raw = localStorage.getItem(BASELINE_KEY);
+        if (!raw) return;
+        const b = JSON.parse(raw);
+        document.getElementById("base_name").value = b.name || "";
+        document.getElementById("base_dob").value = b.dob || "";
+        document.getElementById("base_sex").value = b.sex || "";
+        document.getElementById("base_height").value = b.height || "";
+        document.getElementById("base_weight").value = b.weight || "";
+        document.getElementById("base_conditions").value = b.conditions || "";
+        document.getElementById("base_meds").value = b.meds || "";
+        document.getElementById("base_allergies").value = b.allergies || "";
+        document.getElementById("base_doctors").value = b.doctors || "";
+        document.getElementById("base_contact").value = b.contact || "";
+      } catch (e) {
+        // ignore
+      }
+    })();
+  </script>
+</body>
+</html>

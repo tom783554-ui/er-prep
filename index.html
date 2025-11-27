@@ -567,7 +567,6 @@
           </label>
 
           <button class="no-print" type="button" onclick="generateSummary()">📝 Generate written summary + triage snapshot</button>
-          <button class="no-print secondary-button" type="button" onclick="generateCallScript()">📞 Generate call script</button>
           <button class="no-print secondary-button" type="button" onclick="window.print()">🖨 Print</button>
         </div>
       </div>
@@ -600,12 +599,12 @@
     </div>
 
     <!-- CALL SCRIPT OUTPUT -->
-    <h2>5. Call script (optional)</h2>
+    <h2>5. Call script</h2>
     <p class="small no-print">
-      If you call the ER ahead of time, you can read this script out loud. You still speak to a real person; this just helps you say the important things clearly.
+      If you call the ER ahead of time, you can read this script out loud. It helps you say the important things clearly.
     </p>
     <div id="callScriptBox">
-      (Your call script will appear here after you click "Generate call script".)
+      (Your call script will appear here after you generate the summary.)
     </div>
     <div class="actions-row no-print">
       <button type="button" class="secondary-button" onclick="copyCallScript()">📋 Copy call script</button>
@@ -900,6 +899,9 @@
         visit_surgeries,
         visit_code
       });
+
+      // Auto-generate call script at the same time
+      generateCallScript();
     }
 
     function generateCallScript() {

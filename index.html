@@ -10,9 +10,9 @@
       --surface: #ffffff;
       --surface-soft: #f9fafb;
       --border: #e5e7eb;
-      --accent: #2563eb;
-      --accent-soft: #dbeafe;
-      --text: #111827;
+      --accent: #0ea5e9;
+      --accent-soft: #e0f2fe;
+      --text: #0f172a;
       --muted: #6b7280;
       --danger: #b91c1c;
       --danger-soft: #fee2e2;
@@ -26,33 +26,34 @@
       margin: 0;
       font-family: system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
       line-height: 1.5;
-      background: radial-gradient(circle at top, #1f2937 0, #020617 50%, #020617 100%);
+      background:
+        radial-gradient(circle at top, #1f2937 0, #020617 40%, #020617 100%);
       color: var(--text);
     }
 
     .page {
-      max-width: 960px;
-      margin: 16px auto 32px;
-      padding: 20px 20px 28px;
-      background: var(--surface);
-      border-radius: 14px;
+      max-width: 1040px;
+      margin: 18px auto 32px;
+      padding: 22px 22px 28px;
+      background: radial-gradient(circle at top left, #eff6ff 0, #ffffff 45%, #ffffff 100%);
+      border-radius: 18px;
       border: 1px solid rgba(15, 23, 42, 0.08);
       box-shadow:
-        0 20px 45px rgba(15, 23, 42, 0.25),
+        0 24px 60px rgba(15, 23, 42, 0.35),
         0 0 0 1px rgba(15, 23, 42, 0.03);
     }
 
     h1 {
-      font-size: 1.8rem;
+      font-size: 2rem;
       margin: 0 0 0.25rem;
-      letter-spacing: -0.02em;
+      letter-spacing: -0.03em;
     }
 
     h2 {
-      font-size: 1.1rem;
-      margin-top: 1.75rem;
-      margin-bottom: 0.4rem;
-      letter-spacing: 0.02em;
+      font-size: 1rem;
+      margin-top: 1.25rem;
+      margin-bottom: 0.3rem;
+      letter-spacing: 0.12em;
       text-transform: uppercase;
       color: var(--muted);
     }
@@ -67,7 +68,7 @@
     .header-row {
       display: flex;
       justify-content: space-between;
-      gap: 12px;
+      gap: 16px;
       align-items: flex-start;
       margin-bottom: 0.5rem;
     }
@@ -88,24 +89,35 @@
     }
 
     .badge span {
-      font-size: 0.95rem;
+      font-size: 0.9rem;
     }
 
     .disclaimer-block {
       border-left: 4px solid var(--danger);
       padding: 8px 10px;
       background: var(--danger-soft);
-      border-radius: 8px;
+      border-radius: 10px;
       font-size: 0.85rem;
       color: var(--danger);
       margin-bottom: 0.85rem;
+    }
+
+    .layout-two-col {
+      display: grid;
+      grid-template-columns: minmax(0, 1fr);
+      gap: 18px;
+      margin-top: 8px;
+    }
+
+    .layout-two-col .col {
+      min-width: 0;
     }
 
     .section-card {
       border: 1px solid var(--border);
       padding: 12px 12px 14px;
       margin-top: 8px;
-      border-radius: 10px;
+      border-radius: 12px;
       background: var(--surface-soft);
     }
 
@@ -125,7 +137,7 @@
       box-sizing: border-box;
       font-family: inherit;
       font-size: 0.9rem;
-      border-radius: 8px;
+      border-radius: 9px;
       border: 1px solid var(--border);
       background: #ffffff;
       transition: border-color 0.12s ease, box-shadow 0.12s ease, background-color 0.12s ease;
@@ -152,6 +164,7 @@
 
     .row > div {
       flex: 1;
+      min-width: 0;
     }
 
     button {
@@ -168,19 +181,19 @@
       display: inline-flex;
       align-items: center;
       gap: 6px;
-      box-shadow: 0 6px 14px rgba(37, 99, 235, 0.3);
+      box-shadow: 0 6px 14px rgba(14, 165, 233, 0.32);
       transition: transform 0.07s ease, box-shadow 0.07s ease, background-color 0.1s ease;
     }
 
     button:hover {
       transform: translateY(-1px);
-      box-shadow: 0 10px 22px rgba(37, 99, 235, 0.35);
-      background: #1d4ed8;
+      box-shadow: 0 10px 22px rgba(14, 165, 233, 0.4);
+      background: #0284c7;
     }
 
     button:active {
       transform: translateY(0);
-      box-shadow: 0 4px 10px rgba(37, 99, 235, 0.25);
+      box-shadow: 0 4px 10px rgba(14, 165, 233, 0.25);
     }
 
     .secondary-button {
@@ -205,7 +218,7 @@
       font-family: "SF Mono", Menlo, Consolas, monospace;
       font-size: 0.85rem;
       background: #f9fafb;
-      border-radius: 8px;
+      border-radius: 9px;
     }
 
     .actions-row {
@@ -225,8 +238,8 @@
     .triage-card {
       font-size: 0.85rem;
       background: #f1f5f9;
-      border-radius: 10px;
-      border: 1px solid #cbd5f5;
+      border-radius: 12px;
+      border: 1px solid #d4d4ff;
       padding: 10px 12px 12px;
     }
 
@@ -258,7 +271,7 @@
     }
 
     .triage-pill span {
-      font-size: 0.95rem;
+      font-size: 0.9rem;
     }
 
     .triage-sub {
@@ -306,15 +319,24 @@
       margin-top: 4px;
     }
 
-    @media (max-width: 640px) {
+    @media (max-width: 768px) {
       .page {
-        margin: 8px;
+        margin: 10px;
         padding: 14px 12px 20px;
-        border-radius: 10px;
+        border-radius: 12px;
       }
       .header-row {
         flex-direction: column;
         align-items: flex-start;
+      }
+      .layout-two-col {
+        grid-template-columns: minmax(0, 1fr);
+      }
+    }
+
+    @media (min-width: 769px) {
+      .layout-two-col {
+        grid-template-columns: minmax(0, 1fr) minmax(0, 1fr);
       }
     }
 
@@ -376,156 +398,163 @@
       Do not delay going to the ER to fill out this form.
     </div>
 
-    <!-- BASELINE SECTION -->
-    <h2>1. Your baseline information</h2>
-    <p class="small">
-      Fill this out once when you are well. You can update and save it on <em>this device only</em>.
-    </p>
+    <!-- BASELINE + TODAY'S VISIT SIDE BY SIDE -->
+    <div class="layout-two-col">
+      <!-- COLUMN 1: BASELINE -->
+      <div class="col">
+        <h2>1. Baseline information</h2>
+        <p class="small">
+          Fill this out once when you are well. You can update and save it on <em>this device only</em>.
+        </p>
 
-    <div class="section-card">
-      <label>
-        Full name
-        <input type="text" id="base_name" />
-      </label>
-
-      <div class="row">
-        <div>
+        <div class="section-card">
           <label>
-            Date of birth
-            <input type="text" id="base_dob" placeholder="YYYY-MM-DD or MM/DD/YYYY" />
+            Full name
+            <input type="text" id="base_name" />
           </label>
-        </div>
-        <div>
+
+          <div class="row">
+            <div>
+              <label>
+                Date of birth
+                <input type="text" id="base_dob" placeholder="YYYY-MM-DD or MM/DD/YYYY" />
+              </label>
+            </div>
+            <div>
+              <label>
+                Sex
+                <select id="base_sex">
+                  <option value="">Select…</option>
+                  <option>Male</option>
+                  <option>Female</option>
+                  <option>Other</option>
+                  <option>Prefer not to say</option>
+                </select>
+              </label>
+            </div>
+          </div>
+
+          <div class="row">
+            <div>
+              <label>
+                Height
+                <input type="text" id="base_height" placeholder="e.g. 5'9&quot; or 175 cm" />
+              </label>
+            </div>
+            <div>
+              <label>
+                Weight
+                <input type="text" id="base_weight" placeholder="e.g. 180 lb or 82 kg" />
+              </label>
+            </div>
+          </div>
+
           <label>
-            Sex
-            <select id="base_sex">
-              <option value="">Select…</option>
-              <option>Male</option>
-              <option>Female</option>
-              <option>Other</option>
-              <option>Prefer not to say</option>
-            </select>
+            Chronic conditions (heart, lung, kidney problems; diabetes; cancer; other important diagnoses)
+            <textarea id="base_conditions" placeholder="Example: Coronary artery disease with stent 2018; heart failure; COPD; type 2 diabetes; CKD stage 3."></textarea>
           </label>
-        </div>
-      </div>
 
-      <div class="row">
-        <div>
           <label>
-            Height
-            <input type="text" id="base_height" placeholder="e.g. 5'9&quot; or 175 cm" />
+            Regular medications (include blood thinners like Eliquis, Xarelto, warfarin, Plavix, etc.)
+            <textarea id="base_meds" placeholder="Example: Aspirin 81 mg; Atorvastatin 40 mg; Metoprolol 50 mg BID; Lisinopril 10 mg; Metformin 1000 mg BID; Eliquis 5 mg BID."></textarea>
           </label>
-        </div>
-        <div>
+
           <label>
-            Weight
-            <input type="text" id="base_weight" placeholder="e.g. 180 lb or 82 kg" />
+            Medication / food / contrast allergies (and what happened)
+            <textarea id="base_allergies" placeholder="Example: Penicillin (anaphylaxis); IV contrast (hives); NKDA if none."></textarea>
           </label>
-        </div>
-      </div>
 
-      <label>
-        Chronic conditions (heart, lung, kidney problems; diabetes; cancer; other important diagnoses)
-        <textarea id="base_conditions" placeholder="Example: Coronary artery disease with stent 2018; heart failure; COPD; type 2 diabetes; CKD stage 3."></textarea>
-      </label>
-
-      <label>
-        Regular medications (include blood thinners like Eliquis, Xarelto, warfarin, Plavix, etc.)
-        <textarea id="base_meds" placeholder="Example: Aspirin 81 mg; Atorvastatin 40 mg; Metoprolol 50 mg BID; Lisinopril 10 mg; Metformin 1000 mg BID; Eliquis 5 mg BID."></textarea>
-      </label>
-
-      <label>
-        Medication / food / contrast allergies (and what happened)
-        <textarea id="base_allergies" placeholder="Example: Penicillin (anaphylaxis); IV contrast (hives); NKDA if none."></textarea>
-      </label>
-
-      <label>
-        Primary doctor and important specialists
-        <textarea id="base_doctors" placeholder="Example: Dr. Smith (PCP); Dr. Lee (cardiologist)."></textarea>
-      </label>
-
-      <label>
-        Emergency contact (name and phone)
-        <textarea id="base_contact" placeholder="Example: Jane Doe (spouse), 555-123-4567."></textarea>
-      </label>
-
-      <button class="no-print" type="button" onclick="saveBaseline()">💾 Save baseline on this device</button>
-      <button class="no-print secondary-button" type="button" onclick="loadBaseline()">⟳ Load saved baseline</button>
-      <p class="small">
-        Baseline is stored only in this browser on this device (local storage). Clearing browser data will erase it.
-      </p>
-    </div>
-
-    <!-- CURRENT VISIT SECTION -->
-    <h2>2. Today’s visit</h2>
-    <p class="small">
-      Use this when you are going to the ER by car (and it is safe to use your phone). Keep it brief and honest.
-    </p>
-
-    <div class="section-card">
-      <label>
-        Which ER are you going to? (name and city)
-        <input type="text" id="visit_er" placeholder="Example: Metro General ER, Springfield" />
-      </label>
-
-      <label>
-        What is happening right now? (main problem)
-        <textarea id="visit_chief" placeholder="Example: Chest pain for 40 minutes, pressure in the center of the chest."></textarea>
-      </label>
-
-      <label>
-        When did this start and how?
-        <textarea id="visit_onset" placeholder="Example: Started about 40 minutes ago while walking up stairs; not relieved by rest."></textarea>
-      </label>
-
-      <label>
-        Where is the pain or problem, and does it go anywhere? (location / radiation)
-        <textarea id="visit_location" placeholder="Example: Center of chest, sometimes going to left arm and jaw."></textarea>
-      </label>
-
-      <div class="row">
-        <div>
           <label>
-            How bad is the pain right now? (0–10)
-            <input type="number" id="visit_severity" min="0" max="10" placeholder="Example: 8" />
+            Primary doctor and important specialists
+            <textarea id="base_doctors" placeholder="Example: Dr. Smith (PCP); Dr. Lee (cardiologist)."></textarea>
           </label>
-        </div>
-        <div>
+
           <label>
-            About how long until you arrive? (minutes, optional)
-            <input type="number" id="visit_eta" min="0" max="240" placeholder="Example: 20" />
+            Emergency contact (name and phone)
+            <textarea id="base_contact" placeholder="Example: Jane Doe (spouse), 555-123-4567."></textarea>
           </label>
+
+          <button class="no-print" type="button" onclick="saveBaseline()">💾 Save baseline on this device</button>
+          <button class="no-print secondary-button" type="button" onclick="loadBaseline()">⟳ Load saved baseline</button>
+          <p class="small">
+            Baseline is stored only in this browser on this device (local storage). Clearing browser data will erase it.
+          </p>
         </div>
       </div>
 
-      <label>
-        Other symptoms (shortness of breath, sweating, nausea, weakness, fever, etc.)
-        <textarea id="visit_symptoms" placeholder="Example: Shortness of breath and sweating; no vomiting; no fainting."></textarea>
-      </label>
+      <!-- COLUMN 2: TODAY'S VISIT -->
+      <div class="col">
+        <h2>2. Today’s visit</h2>
+        <p class="small">
+          Use this when you are going to the ER by car (and it is safe to use your phone). Keep it brief and honest.
+        </p>
 
-      <label>
-        What have you taken or done so far?
-        <textarea id="visit_taken" placeholder="Example: Took 2 baby aspirins (162 mg) at home; sat and rested; no nitro available."></textarea>
-      </label>
+        <div class="section-card">
+          <label>
+            Which ER are you going to? (name and city)
+            <input type="text" id="visit_er" placeholder="Example: Metro General ER, Springfield" />
+          </label>
 
-      <label>
-        What worries you the most right now?
-        <textarea id="visit_worries" placeholder="Example: Feels like the chest pain I had with my heart attack in 2018."></textarea>
-      </label>
+          <label>
+            What is happening right now? (main problem)
+            <textarea id="visit_chief" placeholder="Example: Chest pain for 40 minutes, pressure in the center of the chest."></textarea>
+          </label>
 
-      <label>
-        Recent surgeries or procedures (last 3 months, if any)
-        <textarea id="visit_surgeries" placeholder="Example: Knee replacement 3 weeks ago; dialysis catheter placed last month."></textarea>
-      </label>
+          <label>
+            When did this start and how?
+            <textarea id="visit_onset" placeholder="Example: Started about 40 minutes ago while walking up stairs; not relieved by rest."></textarea>
+          </label>
 
-      <label>
-        Code status / DNR (if already decided)
-        <textarea id="visit_code" placeholder="Example: Full code; or DNR-comfort care only; or 'not sure / not discussed yet'."></textarea>
-      </label>
+          <label>
+            Where is the pain or problem, and does it go anywhere? (location / radiation)
+            <textarea id="visit_location" placeholder="Example: Center of chest, sometimes going to left arm and jaw."></textarea>
+          </label>
 
-      <button class="no-print" type="button" onclick="generateSummary()">📝 Generate written summary + triage snapshot</button>
-      <button class="no-print secondary-button" type="button" onclick="generateCallScript()">📞 Generate call script</button>
-      <button class="no-print secondary-button" type="button" onclick="window.print()">🖨 Print</button>
+          <div class="row">
+            <div>
+              <label>
+                How bad is the pain right now? (0–10)
+                <input type="number" id="visit_severity" min="0" max="10" placeholder="Example: 8" />
+              </label>
+            </div>
+            <div>
+              <label>
+                About how long until you arrive? (minutes, optional)
+                <input type="number" id="visit_eta" min="0" max="240" placeholder="Example: 20" />
+              </label>
+            </div>
+          </div>
+
+          <label>
+            Other symptoms (shortness of breath, sweating, nausea, weakness, fever, etc.)
+            <textarea id="visit_symptoms" placeholder="Example: Shortness of breath and sweating; no vomiting; no fainting."></textarea>
+          </label>
+
+          <label>
+            What have you taken or done so far?
+            <textarea id="visit_taken" placeholder="Example: Took 2 baby aspirins (162 mg) at home; sat and rested; no nitro available."></textarea>
+          </label>
+
+          <label>
+            What worries you the most right now?
+            <textarea id="visit_worries" placeholder="Example: Feels like the chest pain I had with my heart attack in 2018."></textarea>
+          </label>
+
+          <label>
+            Recent surgeries or procedures (last 3 months, if any)
+            <textarea id="visit_surgeries" placeholder="Example: Knee replacement 3 weeks ago; dialysis catheter placed last month."></textarea>
+          </label>
+
+          <label>
+            Code status / DNR (if already decided)
+            <textarea id="visit_code" placeholder="Example: Full code; or DNR-comfort care only; or 'not sure / not discussed yet'."></textarea>
+          </label>
+
+          <button class="no-print" type="button" onclick="generateSummary()">📝 Generate written summary + triage snapshot</button>
+          <button class="no-print secondary-button" type="button" onclick="generateCallScript()">📞 Generate call script</button>
+          <button class="no-print secondary-button" type="button" onclick="window.print()">🖨 Print</button>
+        </div>
+      </div>
     </div>
 
     <!-- TRIAGE SNAPSHOT OUTPUT -->
@@ -713,8 +742,7 @@
           <span class="triage-label">Recent surgeries / procedures: </span>${surgeries}
         </div>
         <div class="triage-multiline">
-          <span class="triage-label">Code status / DNR: </span>${code}
-        </div>
+          <span class="triage-label">Code status / DNR: </span>${code}</div>
 
         <div class="triage-section-title">Logistics</div>
         <div class="triage-row">
@@ -979,7 +1007,6 @@
       const base_name = document.getElementById("base_name").value.trim();
       const subject = encodeURIComponent("ER Snapshot for " + (base_name || "patient"));
       const body = encodeURIComponent(lastSummaryText + "\n\n(Generated with ER Prep Snapshot)");
-      // No "to" address – patient fills in the ER email or their doctor's email
       window.location.href = "mailto:?subject=" + subject + "&body=" + body;
     }
 
@@ -1000,7 +1027,6 @@
       URL.revokeObjectURL(url);
     }
 
-    // Auto-load baseline once when page opens
     (function autoLoadBaselineOnce() {
       try {
         const raw = localStorage.getItem(BASELINE_KEY);

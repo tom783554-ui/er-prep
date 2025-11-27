@@ -88,6 +88,9 @@
     .no-print {
       display: block;
     }
+    .actions-row {
+      margin-top: 8px;
+    }
     @media print {
       body {
         max-width: none;
@@ -261,6 +264,11 @@
     <div id="summaryBox">
       (Your summary will appear here after you click "Generate written summary".)
     </div>
+    <div class="actions-row no-print">
+      <button type="button" onclick="copySummary()">Copy summary text</button>
+      <button type="button" onclick="openEmailDraft()">Open email draft with summary</button>
+      <button type="button" onclick="downloadSummaryTxt()">Download summary as .txt</button>
+    </div>
 
     <!-- CALL SCRIPT OUTPUT -->
     <h2>4. Call script (optional)</h2>
@@ -270,10 +278,15 @@
     <div id="callScriptBox">
       (Your call script will appear here after you click "Generate call script".)
     </div>
+    <div class="actions-row no-print">
+      <button type="button" onclick="copyCallScript()">Copy call script</button>
+    </div>
   </div>
 
   <script>
     const BASELINE_KEY = "er_prep_baseline_v1";
+    let lastSummaryText = "";
+    let lastCallScriptText = "";
 
     function saveBaseline() {
       const baseline = {
@@ -400,7 +413,8 @@
       lines.push("Note: This summary was prepared by the patient or family to help explain the situation quickly.");
       lines.push("It does not replace standard triage or medical evaluation.");
 
-      document.getElementById("summaryBox").textContent = lines.join("\n");
+      lastSummaryText = lines.join("\n");
+      document.getElementById("summaryBox").textContent = lastSummaryText;
     }
 
     function generateCallScript() {
@@ -419,12 +433,10 @@
       const visit_worries = document.getElementById("visit_worries").value.trim();
       const visit_eta = document.getElementById("visit_eta").value.trim();
 
-      const ageFromDob = ""; // keeping this simple; not calculating exact age here
-
       const parts = [];
 
       // Opening
-      parts.push("“Hi, my name is " + (base_name || "[your name]") + ".");
+      parts.push("Hi, my name is " + (base_name || "[your name]") + ".");
       if (base_dob) {
         parts.push("My date of birth is " + base_dob + ".");
       }
@@ -470,12 +482,84 @@
         parts.push("We expect to arrive in about " + visit_eta + " minute(s).");
       }
 
-      parts.push("Thank you.”");
+      parts.push("Thank you.");
 
-      document.getElementById("callScriptBox").textContent = parts.join(" ");
+      lastCallScriptText = parts.join(" ");
+      document.getElementById("callScriptBox").textContent = lastCallScriptText;
     }
 
-    // Try to auto-load baseline once when page opens
+    function copyToClipboard(text, label) {
+      if (!text) {
+        alert("Nothing to copy yet. Please generate the " + label + " first.");
+        return;
+      }
+      if (navigator.clipboard && navigator.clipboard.writeText) {
+        navigator.clipboard.writeText(text)
+          .then(() => alert(label + " copied to clipboard."))
+          .catch(() => fallbackCopy(text, label));
+      } else {
+        fallbackCopy(text, label);
+      }
+    }
+
+    function fallbackCopy(text, label) {
+      const ta = document.createElement("textarea");
+      ta.value = text;
+      ta.style.position = "fixed";
+      ta.style.top = "-1000px";
+      document.body.appendChild(ta);
+      ta.focus();
+      ta.select();
+      try {
+        document.execCommand("copy");
+        alert(label + " copied to clipboard.");
+      } catch (e) {
+        alert("Could not copy " + label + " on this device.");
+      }
+      document.body.removeChild(ta);
+    }
+
+    function copySummary() {
+      if (!lastSummaryText) generateSummary();
+      copyToClipboard(lastSummaryText, "Summary");
+    }
+
+    function copyCallScript() {
+      if (!lastCallScriptText) generateCallScript();
+      copyToClipboard(lastCallScriptText, "Call script");
+    }
+
+    function openEmailDraft() {
+      if (!lastSummaryText) generateSummary();
+      if (!lastSummaryText) {
+        alert("No summary available to email.");
+        return;
+      }
+      const base_name = document.getElementById("base_name").value.trim();
+      const subject = encodeURIComponent("ER Snapshot for " + (base_name || "patient"));
+      const body = encodeURIComponent(lastSummaryText + "\n\n(Generated with ER Prep Snapshot)");
+      // No "to" address – patient fills in the ER email or their doctor's email
+      window.location.href = "mailto:?subject=" + subject + "&body=" + body;
+    }
+
+    function downloadSummaryTxt() {
+      if (!lastSummaryText) generateSummary();
+      if (!lastSummaryText) {
+        alert("No summary available to download.");
+        return;
+      }
+      const blob = new Blob([lastSummaryText], { type: "text/plain" });
+      const url = URL.createObjectURL(blob);
+      const a = document.createElement("a");
+      a.href = url;
+      a.download = "er_snapshot.txt";
+      document.body.appendChild(a);
+      a.click();
+      document.body.removeChild(a);
+      URL.revokeObjectURL(url);
+    }
+
+    // Auto-load baseline once when page opens
     (function autoLoadBaselineOnce() {
       try {
         const raw = localStorage.getItem(BASELINE_KEY);
